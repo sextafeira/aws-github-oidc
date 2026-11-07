@@ -1,0 +1,8 @@
+github_owner         = "sextafeira"
+project_name         = "aws-github-oidc"
+region               = "us-east-1"
+environment          = "sandbox"
+github_repository    = "aws-github-oidc"
+github_owner_id      = "60223707"
+github_repository_id = "1448784776"
+github_branch        = "main"
