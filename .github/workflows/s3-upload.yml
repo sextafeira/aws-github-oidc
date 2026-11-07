@@ -1,34 +1,34 @@
-name: OIDC - Upload no S3
+# name: OIDC - Upload no S3
 
-on:
-  push:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
 
-permissions:
-  contents: read
-  id-token: write
+# permissions:
+#   contents: read
+#   id-token: write
 
-jobs:
-  upload:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6.0.2
-        with:
-          persist-credentials: false
-      - name: Obter credenciais temporarias via OIDC
-        uses: aws-actions/configure-aws-credentials@v6.3.0
-        with:
-          role-to-assume: ${{ vars.AWS_S3_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
-          role-session-name: github-s3-${{ github.run_id }}
-      - name: Mostrar identidade e publicar arquivo
-        env:
-          S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
-        run: |
-          set -euo pipefail
-          aws sts get-caller-identity
-          key="demo/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/hello.txt"
-          aws s3 cp examples/hello.txt "s3://${S3_BUCKET_NAME}/${key}"
-          aws s3api head-object --bucket "$S3_BUCKET_NAME" --key "$key"
-          echo "Arquivo publicado: s3://${S3_BUCKET_NAME}/${key}" >> "$GITHUB_STEP_SUMMARY"
+# jobs:
+#   upload:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 5
+#     steps:
+#       - uses: actions/checkout@v6.0.2
+#         with:
+#           persist-credentials: false
+#       - name: Obter credenciais temporarias via OIDC
+#         uses: aws-actions/configure-aws-credentials@v6.3.0
+#         with:
+#           role-to-assume: ${{ vars.AWS_S3_ROLE_ARN }}
+#           aws-region: ${{ vars.AWS_REGION }}
+#           role-session-name: github-s3-${{ github.run_id }}
+#       - name: Mostrar identidade e publicar arquivo
+#         env:
+#           S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
+#         run: |
+#           set -euo pipefail
+#           aws sts get-caller-identity
+#           key="demo/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/hello.txt"
+#           aws s3 cp examples/hello.txt "s3://${S3_BUCKET_NAME}/${key}"
+#           aws s3api head-object --bucket "$S3_BUCKET_NAME" --key "$key"
+#           echo "Arquivo publicado: s3://${S3_BUCKET_NAME}/${key}" >> "$GITHUB_STEP_SUMMARY"
